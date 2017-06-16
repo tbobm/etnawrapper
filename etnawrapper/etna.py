@@ -16,7 +16,7 @@ AUTH_URL = 'https://auth.etna-alternance.net/login'
 MODULE_API = 'https://modules-api.etna-alternance.net'
 
 IDENTITY_URL = ETNA_API + '/identity'
-USER_INFO_URL = ETNA_API + '/api//users/{logid}'
+USER_INFO_URL = ETNA_API + '/api/users/{logid}'
 USER_PROMO_URL = PREP_API + '/promo'
 GRADES_URL = PREP_API + '/terms/205/students/{login}/marks'
 NOTIF_URL = PREP_API + '/students/{login}/informations'
@@ -31,6 +31,7 @@ REQ = {
     'POST': requests.post
 }
 
+
 class MaxRetryError(Exception):
     '''
     Happens when the API stops responding
@@ -42,7 +43,9 @@ class BadStatusException(Exception):
     '''
     The API responded with an unexpected status code
     '''
-    pass
+    def __init__(self, message):
+        self.message = message
+        super(BadStatusException, self).__init__(message)
 
 
 class EtnaWrapper(object):
@@ -76,7 +79,6 @@ class EtnaWrapper(object):
         resp = requests.post(AUTH_URL, data=post_data)
         self._cookie = resp.cookies.get_dict()
 
-
     def _request_api(self, **kwargs):
         '''
         Wraps the calls the url, with the given arguments
@@ -99,15 +101,14 @@ class EtnaWrapper(object):
                 if res.status_code == _status:
                     break
                 else:
-                    raise BadStatusException
-            except (requests.exceptions.BaseHTTPError, BadStatusException):
+                    raise BadStatusException(res.content)
+            except requests.exceptions.BaseHTTPError:
                 if counter < self._retries:
                     counter += 1
                     continue
                 raise MaxRetryError
         self._last_result = res
         return res
-
 
     def get_infos(self):
         '''
@@ -123,7 +124,9 @@ class EtnaWrapper(object):
 
         :return: JSON
         '''
-        return self._request_api(url=USER_INFO_URL.format(logid=logid)).json()
+        _logid = logid
+        _user_info_url = USER_INFO_URL.format(logid=_logid)
+        return self._request_api(url=_user_info_url).json()
 
     def get_promos(self):
         '''
@@ -140,7 +143,8 @@ class EtnaWrapper(object):
         :return: JSON
         '''
         _login = kwargs.get('login', self._login)
-        return self._request_api(url=ACTIVITY_URL.format(login=_login)).json()
+        _activity_url = ACTIVITY_URL.format(login=_login)
+        return self._request_api(url=_activity_url).json()
 
     def get_notifications(self, **kwargs):
         '''
@@ -149,7 +153,8 @@ class EtnaWrapper(object):
         :return: JSON
         '''
         _login = kwargs.get('login', self._login)
-        return self._request_api(url=NOTIF_URL.format(login=_login)).json()
+        _notif_url = NOTIF_URL.format(login=_login)
+        return self._request_api(url=_notif_url).json()
 
     def get_grades(self, **kwargs):
         '''
@@ -191,8 +196,8 @@ class EtnaWrapper(object):
         :return: JSON
         '''
         _module_id = kwargs.get('module')
-        activities_url = ACTIVITIES_URL.format(module_id=_module_id)
-        return self._request_api(url=activities_url).json()
+        _activities_url = ACTIVITIES_URL.format(module_id=_module_id)
+        return self._request_api(url=_activities_url).json()
 
     def get_group_for_activity(self, **kwargs):
         '''
