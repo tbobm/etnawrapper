@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-__version__ = '0.3'
+__version__ = '0.4'
 
 setup(
     name='etnawrapper',
@@ -11,6 +11,6 @@ setup(
     author_email='massar_t@etna-alternance.net',
     url='https://github.com/massard-t/etnawrapper',
     download_url='https://github.com/massard-t/etnawrapper/archive/{}.tar.gz'.format(__version__),
-    keywords=['testing', 'logging', 'example'],
+    keywords=['school', 'wrapper', 'APIs'],
     classifiers=[],
 )
