@@ -18,7 +18,7 @@ MODULE_API = 'https://modules-api.etna-alternance.net'
 IDENTITY_URL = ETNA_API + '/identity'
 USER_INFO_URL = ETNA_API + '/api/users/{logid}'
 USER_PROMO_URL = PREP_API + '/promo'
-GRADES_URL = PREP_API + '/terms/205/students/{login}/marks'
+GRADES_URL = PREP_API + '/terms/{promo_id}/students/{login}/marks'
 NOTIF_URL = PREP_API + '/students/{login}/informations'
 ACTIVITY_URL = MODULE_API + '/students/{login}/currentactivities'
 PICTURE_URL = ETNA_API + '/api/users/{login}/photo'
@@ -165,7 +165,8 @@ class EtnaWrapper(object):
         :return: JSON
         """
         _login = kwargs.get('login', self._login)
-        _grades_url = GRADES_URL.format(login=_login)
+        _promotion_id = kwargs.get('promotion')
+        _grades_url = GRADES_URL.format(login=_login, promo_id=_promotion_id)
         return self._request_api(url=_grades_url).json()
 
     def get_picture(self, **kwargs):
