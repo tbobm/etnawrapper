@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-__version__ = '0.5'
+__version__ = '1.0'
 
 setup(
     name='etnawrapper',
