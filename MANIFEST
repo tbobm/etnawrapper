@@ -3,3 +3,4 @@ setup.cfg
 setup.py
 etnawrapper/__init__.py
 etnawrapper/etna.py
+etnawrapper/get_ranking.py
