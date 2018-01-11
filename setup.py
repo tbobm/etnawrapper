@@ -12,5 +12,11 @@ setup(
     url='https://github.com/massard-t/etnawrapper',
     download_url='https://github.com/massard-t/etnawrapper/archive/{}.tar.gz'.format(__version__),
     keywords=['school', 'wrapper', 'APIs'],
-    classifiers=[],
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python'
+    ],
 )
