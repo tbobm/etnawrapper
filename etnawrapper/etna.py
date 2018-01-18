@@ -225,3 +225,9 @@ class EtnaWrapper(object):
         _promotion_id = kwargs.get('promotion')
         _url = PROMOTION_URL.format(promo_id=_promotion_id)
         return self._request_api(url=_url).json()
+
+__all__ = [
+    'BadStatusException',
+    'EtnaWrapper',
+    'MaxRetryError',
+]
