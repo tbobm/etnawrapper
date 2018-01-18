@@ -62,21 +62,21 @@ class EtnaWrapper(object):
 
         """
         self._login = kwargs.get('login', None)
-        self._password = kwargs.get('password', None)
+        password = kwargs.get('password', None)
         self._retries = kwargs.get('retries', 5)
         self._cookie = kwargs.get('cookies', None)
         self._last_result = None
 
-        ids = [self._login, self._password, self._cookie]
+        ids = [self._login, password, self._cookie]
         if all(val is None for val in ids):
             raise ValueError('Provide either login/password, or a cookie')
         if self._cookie is None:
-            self._get_cookie()
+            self._get_cookie(password)
 
-    def _get_cookie(self):
+    def _get_cookie(self, password):
         post_data = {
             'login': self._login,
-            'password': self._password
+            'password': password
         }
         resp = requests.post(AUTH_URL, data=post_data)
         self._cookie = resp.cookies.get_dict()
