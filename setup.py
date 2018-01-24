@@ -1,10 +1,13 @@
 from distutils.core import setup
 
-__version__ = '1.1'
+__version__ = '1.1.1'
 
 setup(
     name='etnawrapper',
     packages=['etnawrapper'],
+    install_requires=[
+        'requests',
+    ],
     version=__version__,
     description='API wrapper for ETNA\' APIs',
     long_description=open('README.rst', 'r').read(),
