@@ -10,7 +10,6 @@ setup(
     ],
     version=__version__,
     description='API wrapper for ETNA\' APIs',
-    long_description=open('README.rst', 'r').read(),
     author='Theo Massard',
     author_email='massar_t@etna-alternance.net',
     url='https://github.com/massard-t/etnawrapper',
