@@ -46,7 +46,7 @@ class BadStatusException(Exception):
     """
     def __init__(self, message):
         self.message = message
-        super(BadStatusException, self).__init__(message)
+        super().__init__(message)
 
 
 class EtnaWrapper(object):
@@ -54,7 +54,7 @@ class EtnaWrapper(object):
     """Docstring for EtnaWrapper. """
 
     def __init__(self, **kwargs):
-        """Initialises the EtnaWrapper. Gets a cookie.
+        """Initialise the EtnaWrapper and grab a cookie.
 
         :param str login: Login of the user
         :param str password: Password of the user
@@ -226,8 +226,9 @@ class EtnaWrapper(object):
         _url = PROMOTION_URL.format(promo_id=_promotion_id)
         return self._request_api(url=_url).json()
 
-__all__ = [
+
+__all__ = (
     'BadStatusException',
     'EtnaWrapper',
     'MaxRetryError',
-]
+)
