@@ -34,9 +34,7 @@ REQ = {
 
 
 class MaxRetryError(Exception):
-    """
-    Happens when the API stops responding
-    """
+    """The API stops answering."""
     pass
 
 
@@ -78,12 +76,11 @@ class EtnaWrapper(object):
             'login': self._login,
             'password': password
         }
-        resp = requests.post(AUTH_URL, data=post_data)
+        resp = requests.post(AUTH_URL, data=post_data, timeout=5)
         self._cookie = resp.cookies.get_dict()
 
     def _request_api(self, **kwargs):
-        """
-        Wraps the calls the url, with the given arguments
+        """Wrap the calls the url, with the given arguments
 
         :param str url: Url to call with the given arguments
         :param str method: [POST | GET] Method to use on the request
@@ -113,16 +110,14 @@ class EtnaWrapper(object):
         return res
 
     def get_infos(self):
-        """
-        GET Infos about the user
+        """Get infos about the user - GET
 
         :return: JSON
         """
         return self._request_api(url=IDENTITY_URL).json()
 
     def get_infos_with_id(self, logid):
-        """
-        GET Infos about a user given its id
+        """Get infos about a user given its id - GET
 
         :return: JSON
         """
@@ -131,8 +126,7 @@ class EtnaWrapper(object):
         return self._request_api(url=_user_info_url).json()
 
     def get_promos(self):
-        """
-        GET Promos of user
+        """Get the corresponding promotions of user.
 
         :return: JSON
         """
