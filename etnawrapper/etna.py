@@ -131,7 +131,7 @@ class EtnaWrapper:
                 if res.status_code == _status:
                     break
                 else:
-                    raise BadStatusException(res.content)
+                    raise BadStatusException(res.text)
             except requests.exceptions.BaseHTTPError:
                 if counter < self._retries:
                     counter += 1
