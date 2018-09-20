@@ -11,7 +11,7 @@ Usage:
         "promotion": "promotion",
         # ...
     }
-    
+
 This usage is supposedly quite unsafe, mainly because you have to
 type your password (which isn't stored in the EtnaWrapper object)
 in clear text.
@@ -73,13 +73,11 @@ class BadStatusException(Exception):
 class EtnaWrapper:
     """Simple HTTP client."""
 
-    def __init__(
-                    self,
-                    login=None,
-                    password=None,
-                    cookie=None,
-                    **kwargs
-                ):
+    def __init__(self,
+                 login=None,
+                 password=None,
+                 cookie=None,
+                 **kwargs):
         """Initialise the EtnaWrapper.
 
         Make a call to AUTH_URL, store the login and dump the password away.
