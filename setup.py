@@ -1,7 +1,9 @@
 from distutils.core import setup
 
 __version__ = '1.1.3'
-
+URL = 'https://github.com/massard-t/etnawrapper/archive/{}.tar.gz'.format(
+    __version__
+)
 setup(
     name='etnawrapper',
     packages=['etnawrapper'],
@@ -13,7 +15,7 @@ setup(
     author='Theo Massard',
     author_email='massar_t@etna-alternance.net',
     url='https://github.com/massard-t/etnawrapper',
-    download_url='https://github.com/massard-t/etnawrapper/archive/{}.tar.gz'.format(__version__),
+    download_url=URL,
     keywords=['school', 'wrapper', 'APIs'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
