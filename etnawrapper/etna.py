@@ -36,6 +36,8 @@ import requests
 __author__ = 'Theo Massard <massar_t@etna-alternance.net>'
 
 PREP_API = 'https://prepintra-api.etna-alternance.net'
+INTRA_API = 'https://intra-api.etna-alternance.net/students'
+
 ETNA_API = 'https://auth.etna-alternance.net'
 AUTH_URL = 'https://auth.etna-alternance.net/login'
 MODULE_API = 'https://modules-api.etna-alternance.net'
@@ -51,6 +53,7 @@ SEARCH_URL = MODULE_API + '/students/{login}/search'
 ACTIVITIES_URL = MODULE_API + '/{module_id}/activities'
 GROUPS_URL = PREP_API + '/sessions/{module_id}/project/{project_id}/groups'
 PROMOTION_URL = PREP_API + '/trombi/{promo_id}'
+CALENDAR_URL = INTRA_API + '/{login}/events?start={start}&end={end}'
 
 REQ = {
     'GET': requests.get,
@@ -177,6 +180,23 @@ class EtnaWrapper:
         )
         _activity_url = ACTIVITY_URL.format(login=_login)
         return self._request_api(url=_activity_url).json()
+
+    def get_calendar(self, start, end, login=None):
+        """Get the calendar of `login` (default self.login) for the range.
+
+        >>> client.get_calendar(today, today.shift(days=3))
+        ... [{'activity_name': 'name', 'start': '%Y-%m-%d %H:%M:%S', ...}]
+        """
+        _login = login or self._login
+        start_fmt = start.strftime("%Y-%m-%d %H:%M:%S")
+        end_fmt = end.strftime("%Y-%m-%d %H:%M:%S")
+        _calendar_url = CALENDAR_URL.format(
+            login=_login,
+            start=start_fmt,
+            end=end_fmt,
+        )
+        res = self._request_api(url=_calendar_url).json()
+        return res
 
     def get_notifications(self, login=None, **kwargs):
         """Get the current notifications of a user.
