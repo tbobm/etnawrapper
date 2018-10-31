@@ -32,15 +32,13 @@ Based on https://github.com/josephbedminster/api-etna
 """
 import requests
 
-
 __author__ = 'Theo Massard <massar_t@etna-alternance.net>'
 
 PREP_API = 'https://prepintra-api.etna-alternance.net'
-INTRA_API = 'https://intra-api.etna-alternance.net/students'
-
 ETNA_API = 'https://auth.etna-alternance.net'
 AUTH_URL = 'https://auth.etna-alternance.net/login'
 MODULE_API = 'https://modules-api.etna-alternance.net'
+GSA_API = 'https://gsa-api.etna-alternance.net'
 
 IDENTITY_URL = ETNA_API + '/identity'
 USER_INFO_URL = ETNA_API + '/api/users/{logid}'
@@ -53,7 +51,10 @@ SEARCH_URL = MODULE_API + '/students/{login}/search'
 ACTIVITIES_URL = MODULE_API + '/{module_id}/activities'
 GROUPS_URL = PREP_API + '/sessions/{module_id}/project/{project_id}/groups'
 PROMOTION_URL = PREP_API + '/trombi/{promo_id}'
-CALENDAR_URL = INTRA_API + '/{login}/events?start={start}&end={end}'
+GSA_EVENTS_URL = GSA_API + '/students/{login}/events'
+
+EVENTS_URL = PREP_API + '/students/{login}/events?end={end_date}&start={start_date}'
+
 
 REQ = {
     'GET': requests.get,
@@ -62,12 +63,13 @@ REQ = {
 
 
 class MaxRetryError(Exception):
-    """The API stops answering."""
+    """Happen when the API stops responding."""
     pass
 
 
 class BadStatusException(Exception):
     """Receive unexpected reponse code."""
+
     def __init__(self, message):
         self.message = message
         super().__init__(message)
@@ -76,11 +78,13 @@ class BadStatusException(Exception):
 class EtnaWrapper:
     """Simple HTTP client."""
 
-    def __init__(self,
-                 login=None,
-                 password=None,
-                 cookie=None,
-                 **kwargs):
+    def __init__(
+            self,
+            login=None,
+            password=None,
+            cookie=None,
+            **kwargs
+    ):
         """Initialise the EtnaWrapper.
 
         Make a call to AUTH_URL, store the login and dump the password away.
@@ -108,7 +112,7 @@ class EtnaWrapper:
             'login': self._login,
             'password': password
         }
-        resp = requests.post(AUTH_URL, data=post_data, timeout=5)
+        resp = requests.post(AUTH_URL, data=post_data)
         self._cookie = resp.cookies.get_dict()
 
     def _request_api(self, **kwargs):
@@ -132,7 +136,7 @@ class EtnaWrapper:
                 if res.status_code == _status:
                     break
                 else:
-                    raise BadStatusException(res.text)
+                    raise BadStatusException(res.content)
             except requests.exceptions.BaseHTTPError:
                 if counter < self._retries:
                     counter += 1
@@ -181,22 +185,6 @@ class EtnaWrapper:
         _activity_url = ACTIVITY_URL.format(login=_login)
         return self._request_api(url=_activity_url).json()
 
-    def get_calendar(self, start, end, login=None):
-        """Get the calendar of `login` (default self.login) for the range.
-
-        >>> client.get_calendar(today, today.shift(days=3))
-        ... [{'activity_name': 'name', 'start': '%Y-%m-%d %H:%M:%S', ...}]
-        """
-        _login = login or self._login
-        start_fmt = start.strftime("%Y-%m-%d %H:%M:%S")
-        end_fmt = end.strftime("%Y-%m-%d %H:%M:%S")
-        _calendar_url = CALENDAR_URL.format(
-            login=_login,
-            start=start_fmt,
-            end=end_fmt,
-        )
-        res = self._request_api(url=_calendar_url).json()
-        return res
 
     def get_notifications(self, login=None, **kwargs):
         """Get the current notifications of a user.
@@ -285,6 +273,36 @@ class EtnaWrapper:
         _promotion_id = kwargs.get('promotion')
         _url = PROMOTION_URL.format(promo_id=_promotion_id)
         return self._request_api(url=_url).json()
+
+    def get_log_events(self, login=None, **kwargs):
+        """Get a user's log events.
+
+        :param str login: User's login (Default: self._login)
+        :return: JSON
+        """
+
+        _login = kwargs.get(
+            'login',
+            login
+        )
+        log_events_url = GSA_EVENTS_URL.format(login=_login)
+        return self._request_api(url=log_events_url).json()
+
+    def get_events(self, login=None, start_date=None, end_date=None, **kwargs):
+        """Get a user's events.
+
+        :param str login: User's login (Default: self._login)
+        :param str start_date: Start date
+        :param str end_date: To date
+        :return: JSON
+        """
+
+        _login = kwargs.get(
+            'login',
+            login
+        )
+        log_events_url = EVENTS_URL.format(login=_login, start_date=start_date, end_date=end_date)
+        return self._request_api(url=log_events_url).json()
 
 
 __all__ = (
