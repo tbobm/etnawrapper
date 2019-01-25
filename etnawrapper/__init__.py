@@ -5,13 +5,13 @@ Allows accessing the module
 '''
 from .etna import (
     BadStatusException,
-    EtnaWrapper,
+    EtnaClient,
     MaxRetryError,
 )
 
 
 __all__ = [
     'BadStatusException',
-    'EtnaWrapper',
+    'EtnaClient',
     'MaxRetryError',
 ]
