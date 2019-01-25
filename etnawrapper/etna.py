@@ -52,6 +52,7 @@ ACTIVITIES_URL = MODULE_API + '/{module_id}/activities'
 GROUPS_URL = PREP_API + '/sessions/{module_id}/project/{project_id}/groups'
 PROMOTION_URL = PREP_API + '/trombi/{promo_id}'
 GSA_EVENTS_URL = GSA_API + '/students/{login}/events'
+GSA_LOGS_URL = GSA_API + '/students/{login}/logs'
 
 EVENTS_URL = PREP_API + '/students/{login}/events?end={end_date}&start={start_date}'
 
@@ -301,7 +302,25 @@ class EtnaWrapper:
             'login',
             login
         )
-        log_events_url = EVENTS_URL.format(login=_login, start_date=start_date, end_date=end_date)
+        log_events_url = EVENTS_URL.format(
+            login=_login,
+            start_date=start_date,
+            end_date=end_date,
+        )
+        return self._request_api(url=log_events_url).json()
+
+    def get_logs(self, login=None, **kwargs):
+        """Get a user's logs.
+
+        :param str login: User's login (Default: self._login)
+        :return: JSON
+        """
+
+        _login = kwargs.get(
+            'login',
+            login
+        )
+        log_events_url = GSA_LOGS_URL.format(login=_login)
         return self._request_api(url=log_events_url).json()
 
 
