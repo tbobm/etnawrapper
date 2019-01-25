@@ -162,41 +162,8 @@ class EtnaClient:
                 return fun() if callable(fun) else fun
             return result
         except KeyError:
+            self.logger.exception('uh ohhh')
             raise NotImplementedError('could not reach {}'.format(name))
-
-    def get_activities_for_project(self, module_id: int):
-        """Get the related activities of a project."""
-        _activities_url = constants.ACTIVITIES_URL.format(module_id=module_id)
-        return self._request_api(url=_activities_url).json()
-
-    def get_group_for_activity(self,
-                               module_id: str,
-                               project_id: str):
-        """Get groups for activity."""
-        _url = constants.GROUPS_URL.format(
-            module_id=module_id,
-            project_id=project_id,
-        )
-        return self._request_api(url=_url).json()
-
-    def get_students(self, promotion_id: str):
-        """Get users by promotion id."""
-        _url = constants.PROMOTION_URL.format(promo_id=promotion_id)
-        return self._request_api(url=_url).json()
-
-    def get_log_events(self, login: str):
-        """Get a user's log events."""
-        log_events_url = constants.GSA_EVENTS_URL.format(login=login)
-        return self._request_api(url=log_events_url).json()
-
-    def get_events(self, login: str, start_date: str, end_date: str):
-        """Get a user's events."""
-        log_events_url = constants.EVENTS_URL.format(
-            login=login,
-            start_date=start_date,
-            end_date=end_date,
-        )
-        return self._request_api(url=log_events_url).json()
 
 
 __all__ = (

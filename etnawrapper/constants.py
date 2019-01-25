@@ -15,9 +15,9 @@ NOTIF_URL = PREP_API + '/students/{login}/informations'
 ACTIVITY_URL = MODULE_API + '/students/{login}/currentactivities'
 PICTURE_URL = ETNA_API + '/api/users/{login}/photo'
 SEARCH_URL = MODULE_API + '/students/{login}/search'
-ACTIVITIES_URL = MODULE_API + '/{module_id}/activities'
+ACTIVITIES_URL = MODULE_API + '/{project_id}/activities'
 GROUPS_URL = PREP_API + '/sessions/{module_id}/project/{project_id}/groups'
-PROMOTION_URL = PREP_API + '/trombi/{promo_id}'
+PROMOTION_URL = PREP_API + '/trombi/{promotion_id}'
 GSA_EVENTS_URL = GSA_API + '/students/{login}/events'
 
 EVENTS_URL = '{}{}'.format(

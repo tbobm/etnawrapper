@@ -2,59 +2,81 @@
 get_infos:
   url: IDENTITY_URL
   post_process: json
+
 get_infos_with_id:
   url: USER_INFO_URL
   params:
     user_id: int
   post_process: json
+
 get_promos:
   url: USER_PROMO_URL
   name: get_current_activities
   params:
     login: str
   post_process: json
+
 get_notifications:
   url: ACTIVITY_URL
   params:
     login: str
   post_process: json
+
 get_current_activities:
   url: NOTIF_URL
   params:
     login: str
   post_process: json
+
 get_grades:
   url: GRADES_URL
   params:
     login: str
     promotion_id: int
   post_process: json
+
 get_picture:
   url: PICTURE_URL
   params:
     login: str
   post_process: content
+
 get_projects:
   url: SEARCH_URL
   params:
     login: str
   post_process: json
+
 get_activities_for_project:
   url: ACTIVITIES_URL
   params:
-    module_id: int
+    project_id: int
   post_process: json
+
 get_group_for_activity:
+  url: GROUPS_URL
+  params:
+    module_id: int
+    project_id: int
+  post_process: json
+
 get_students:
+  url: PROMOTION_URL
   params:
     promotion_id: str
+  post_process: json
+
 get_log_events:
+  url: GSA_EVENTS_URL
   params:
     login: str
+  post_process: json
+
 get_events:
+  url: EVENTS_URL
   params:
     login: str
     start_date: str
     end_date: str
-  post_process: .json()
+  post_process: json
 ...
