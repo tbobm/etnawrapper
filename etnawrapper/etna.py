@@ -1,37 +1,15 @@
 #!/usr/bin/env python3
-# coding: utf-8
-"""Client for ETNA's APIs
-
-Usage:
-    >>> from etnawrapper import EtnaWrapper
-    >>> client = EtnaWrapper(login='login', password='xxxxx')
-    >>> client.get_infos()
-    {
-        "id": 0,
-        "promotion": "promotion",
-        # ...
-    }
-
-This usage is supposedly quite unsafe, mainly because you have to
-type your password (which isn't stored in the EtnaWrapper object)
-in clear text.
-In order to avoid this, you can also login directly using a cookie.
-
-Usage:
-    >>> # same as above
-    >>> client = EtnaWrapper(cookie='cookie-given-by-etna*')
-    >>> client.get_infos()
-    {
-        # Same as above
-    }
-
-Upon client initialization, a call will be made to only store a cookie
-in the object.
-
-Based on https://github.com/josephbedminster/api-etna
-"""
+"""Client for ETNA's APIs"""
+# TODO: Cookie management
+# TODO: Implement a Session upon instantiation?
+# TODO: Move all those dirty urls
+# TODO: Cli ? :o
+# TODO: CLI.
 import requests
 
+# TODO: I am ASHAMED of doing it, dev purpose
+# TODO: Remove this crappy line of hell
+from constants import *
 __author__ = 'Theo Massard <massar_t@etna-alternance.net>'
 
 PREP_API = 'https://prepintra-api.etna-alternance.net'
@@ -63,20 +41,29 @@ REQ = {
 }
 
 
-class MaxRetryError(Exception):
-    """Happen when the API stops responding."""
-    pass
-
-
-class BadStatusException(Exception):
-    """Receive unexpected reponse code."""
-
-    def __init__(self, message):
-        self.message = message
-        super().__init__(message)
-
-
 class EtnaWrapper:
+    """"""
+    def __init__(self, login: str, password: str = None, cookies: dict = None):
+        self._cookies = cookies
+        if cookies is None:
+            self._cookies = self.get_cookies(login, password)
+
+    @staticmethod
+    def get_cookies(cls, login: str = None, password: str = None) -> str:
+        """Fetch a Cookie."""
+        if login is None and cls._login is None:
+            raise ValueError("missing login, can not authenticate")
+        if password is None:
+            raise ValueError("missing password, can not authenticate")
+        data = {
+            'login': login or cls._login,
+            'password': password
+        }
+        resp = requests.post(AUTH_URL, data=data)
+        return resp.cookies.get_dict()
+
+
+class OldWrapper:
     """Simple HTTP client."""
 
     def __init__(
