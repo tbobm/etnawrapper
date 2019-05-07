@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 """Client for ETNA's APIs"""
-# TODO: Cookie management
 # TODO: Implement a Session upon instantiation?
-# TODO: Move all those dirty urls
 # TODO: Cli ? :o
 # TODO: CLI.
 from typing import Union
+from io import BytesIO
 
 import requests
 
-# TODO: I am ASHAMED of doing it, dev purpose
-# TODO: Remove this crappy line of hell
 from .constants import (
     AUTH_URL,
     IDENTITY_URL,
@@ -20,15 +17,11 @@ from .constants import (
     ACTIVITY_URL,
     NOTIF_URL,
     GRADES_URL,
+    PICTURE_URL,
 )
 
 
 __author__ = 'Theo Massard <massar_t@etna-alternance.net>'
-
-REQ = {
-    'GET': requests.get,
-    'POST': requests.post
-}
 
 
 class EtnaWrapper:
@@ -121,6 +114,11 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
+    def get_picture(self, login: str = None) -> BytesIO:
+        url = PICTURE_URL.format(login=login or self.login)
+        result = self._query(url, raw=True)
+        return result.content
+
 class OldWrapper:
     """Simple HTTP client."""
 
@@ -134,12 +132,7 @@ class OldWrapper:
         pass
 
     def _get_cookie(self, password):
-        post_data = {
-            'login': self.login,
-            'password': password
-        }
-        resp = requests.post(AUTH_URL, data=post_data)
-        self._cookie = resp.cookies.get_dict()
+        pass
 
     def _request_api(self, **kwargs):  # XXX: refactored
         pass
@@ -160,19 +153,7 @@ class OldWrapper:
         pass
 
     def get_grades(self, login=None, promotion=None, **kwargs):
-        """Get a user's grades on a single promotion based on his login.
-
-        Either use the `login` param, or the client's login if unset.
-        :return: JSON
-        """
-
-        _login = kwargs.get(
-            'login',
-            login or self.login
-        )
-        _promotion_id = kwargs.get('promotion', promotion)
-        _grades_url = GRADES_URL.format(login=_login, promo_id=_promotion_id)
-        return self._request_api(url=_grades_url).json()
+        pass
 
     def get_picture(self, login=None, **kwargs):
         """Get a user's picture.
