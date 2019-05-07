@@ -122,53 +122,6 @@ class EtnaWrapper:
 class OldWrapper:
     """Simple HTTP client."""
 
-    def __init__(
-            self,
-            login=None,
-            password=None,
-            cookie=None,
-            **kwargs
-    ):
-        pass
-
-    def _get_cookie(self, password):
-        pass
-
-    def _request_api(self, **kwargs):  # XXX: refactored
-        pass
-
-    def get_infos(self):  # XXX: refactored
-        pass
-
-    def get_infos_with_id(self, uid):  # XXX: refactored
-        pass
-
-    def get_promos(self):  # XXX: refactored
-        pass
-
-    def get_current_activities(self, login=None, **kwargs):  # XXX: refactored
-        pass
-
-    def get_notifications(self, login=None, **kwargs):  # XXX: refactored
-        pass
-
-    def get_grades(self, login=None, promotion=None, **kwargs):
-        pass
-
-    def get_picture(self, login=None, **kwargs):
-        """Get a user's picture.
-
-        :param str login: Login of the user to check
-        :return: JSON
-        """
-
-        _login = kwargs.get(
-            'login',
-            login or self.login
-        )
-        _activities_url = PICTURE_URL.format(login=_login)
-        return self._request_api(url=_activities_url).content
-
     def get_projects(self, **kwargs):
         """Get a user's project.
 
