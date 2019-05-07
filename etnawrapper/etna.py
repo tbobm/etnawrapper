@@ -17,6 +17,9 @@ from .constants import (
     USER_INFO_URL,
     PROMOTION_URL,
     USER_PROMO_URL,
+    ACTIVITY_URL,
+    NOTIF_URL,
+    GRADES_URL,
 )
 
 
@@ -93,6 +96,31 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
+    def get_current_activities(self, login: str = None) -> dict:
+        """Return a user's current activities.
+
+        Defaults to self.login.
+
+        """
+        url = ACTIVITY_URL.format(login or self.login)
+        result = self._query(url)
+        return result
+
+    def get_notifications(self, login: str = None) -> dict:
+        """Return `login`'s notifications.
+
+        If login is not set, defaults to self.login.
+        """
+        url = NOTIF_URL.format(login or self.login)
+        result = self._query(url)
+        return result
+
+    def get_grades(self, promotion_id: int, login: str = None) -> dict:
+        """Fetch a student's grades, based on the promotion."""
+        url = GRADES_URL.format(login=login or self.login, promo_id=promotion_id)
+        result = self._query(url)
+        return result
+
 class OldWrapper:
     """Simple HTTP client."""
 
@@ -107,7 +135,7 @@ class OldWrapper:
 
     def _get_cookie(self, password):
         post_data = {
-            'login': self._login,
+            'login': self.login,
             'password': password
         }
         resp = requests.post(AUTH_URL, data=post_data)
@@ -122,40 +150,14 @@ class OldWrapper:
     def get_infos_with_id(self, uid):  # XXX: refactored
         pass
 
-    def get_promos(self):
-        """Get informations about the user's promotion.
+    def get_promos(self):  # XXX: refactored
+        pass
 
-        :return: JSON
-        """
+    def get_current_activities(self, login=None, **kwargs):  # XXX: refactored
+        pass
 
-        return self._request_api(url=USER_PROMO_URL).json()
-
-    def get_current_activities(self, login=None, **kwargs):
-        """Get the current activities of user.
-
-        Either use the `login` param, or the client's login if unset.
-        :return: JSON
-        """
-
-        _login = kwargs.get(
-            'login',
-            login or self._login
-        )
-        _activity_url = ACTIVITY_URL.format(login=_login)
-        return self._request_api(url=_activity_url).json()
-
-    def get_notifications(self, login=None, **kwargs):
-        """Get the current notifications of a user.
-
-        :return: JSON
-        """
-
-        _login = kwargs.get(
-            'login',
-            login or self._login
-        )
-        _notif_url = NOTIF_URL.format(login=_login)
-        return self._request_api(url=_notif_url).json()
+    def get_notifications(self, login=None, **kwargs):  # XXX: refactored
+        pass
 
     def get_grades(self, login=None, promotion=None, **kwargs):
         """Get a user's grades on a single promotion based on his login.
@@ -166,7 +168,7 @@ class OldWrapper:
 
         _login = kwargs.get(
             'login',
-            login or self._login
+            login or self.login
         )
         _promotion_id = kwargs.get('promotion', promotion)
         _grades_url = GRADES_URL.format(login=_login, promo_id=_promotion_id)
@@ -181,7 +183,7 @@ class OldWrapper:
 
         _login = kwargs.get(
             'login',
-            login or self._login
+            login or self.login
         )
         _activities_url = PICTURE_URL.format(login=_login)
         return self._request_api(url=_activities_url).content
@@ -189,11 +191,11 @@ class OldWrapper:
     def get_projects(self, **kwargs):
         """Get a user's project.
 
-        :param str login: User's login (Default: self._login)
+        :param str login: User's login (Default: self.login)
         :return: JSON
         """
 
-        _login = kwargs.get('login', self._login)
+        _login = kwargs.get('login', self.login)
         search_url = SEARCH_URL.format(login=_login)
         return self._request_api(url=search_url).json()
 
@@ -235,7 +237,7 @@ class OldWrapper:
     def get_log_events(self, login=None, **kwargs):
         """Get a user's log events.
 
-        :param str login: User's login (Default: self._login)
+        :param str login: User's login (Default: self.login)
         :return: JSON
         """
 
@@ -249,7 +251,7 @@ class OldWrapper:
     def get_events(self, login=None, start_date=None, end_date=None, **kwargs):
         """Get a user's events.
 
-        :param str login: User's login (Default: self._login)
+        :param str login: User's login (Default: self.login)
         :param str start_date: Start date
         :param str end_date: To date
         :return: JSON
@@ -269,7 +271,7 @@ class OldWrapper:
     def get_logs(self, login=None, **kwargs):
         """Get a user's logs.
 
-        :param str login: User's login (Default: self._login)
+        :param str login: User's login (Default: self.login)
         :return: JSON
         """
 
