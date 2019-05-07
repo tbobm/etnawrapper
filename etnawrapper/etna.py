@@ -5,35 +5,22 @@
 # TODO: Move all those dirty urls
 # TODO: Cli ? :o
 # TODO: CLI.
+from typing import Union
+
 import requests
 
 # TODO: I am ASHAMED of doing it, dev purpose
 # TODO: Remove this crappy line of hell
-from constants import *
+from .constants import (
+    AUTH_URL,
+    IDENTITY_URL,
+    USER_INFO_URL,
+    PROMOTION_URL,
+    USER_PROMO_URL,
+)
+
+
 __author__ = 'Theo Massard <massar_t@etna-alternance.net>'
-
-PREP_API = 'https://prepintra-api.etna-alternance.net'
-ETNA_API = 'https://auth.etna-alternance.net'
-AUTH_URL = 'https://auth.etna-alternance.net/login'
-MODULE_API = 'https://modules-api.etna-alternance.net'
-GSA_API = 'https://gsa-api.etna-alternance.net'
-
-IDENTITY_URL = ETNA_API + '/identity'
-USER_INFO_URL = ETNA_API + '/api/users/{logid}'
-USER_PROMO_URL = PREP_API + '/promo'
-GRADES_URL = PREP_API + '/terms/{promo_id}/students/{login}/marks'
-NOTIF_URL = PREP_API + '/students/{login}/informations'
-ACTIVITY_URL = MODULE_API + '/students/{login}/currentactivities'
-PICTURE_URL = ETNA_API + '/api/users/{login}/photo'
-SEARCH_URL = MODULE_API + '/students/{login}/search'
-ACTIVITIES_URL = MODULE_API + '/{module_id}/activities'
-GROUPS_URL = PREP_API + '/sessions/{module_id}/project/{project_id}/groups'
-PROMOTION_URL = PREP_API + '/trombi/{promo_id}'
-GSA_EVENTS_URL = GSA_API + '/students/{login}/events'
-GSA_LOGS_URL = GSA_API + '/students/{login}/logs'
-
-EVENTS_URL = PREP_API + '/students/{login}/events?end={end_date}&start={start_date}'
-
 
 REQ = {
     'GET': requests.get,
@@ -43,10 +30,35 @@ REQ = {
 
 class EtnaWrapper:
     """"""
-    def __init__(self, login: str, password: str = None, cookies: dict = None):
+    def __init__(self, login: str, password: str = None, cookies: dict = None, use_session: bool = False):
+        self.login = login
         self._cookies = cookies
         if cookies is None:
             self._cookies = self.get_cookies(login, password)
+        # XXX: be careful about this one
+        if use_session:
+            self._req = requests.Session()
+        else:
+            self._req = requests
+
+    def _query(self, url: str, method='GET', raw: bool = False, data=None) -> Union[dict, requests.Response]:
+        """Perform a request using the `self._req` HTTP client.
+
+        Upon requesting a non-standard URL (not returning JSON),
+        the `raw` flag allow to return a `requests.Response` object
+        instead of a dictionnary.
+        """
+        response = self._req.request(
+            method,
+            url,
+            cookies=self._cookies,
+            json=data,
+            headers=self.headers,
+            timeout=50
+        )
+        if raw:
+            return response
+        return response.json()
 
     @staticmethod
     def get_cookies(cls, login: str = None, password: str = None) -> str:
@@ -62,6 +74,24 @@ class EtnaWrapper:
         resp = requests.post(AUTH_URL, data=data)
         return resp.cookies.get_dict()
 
+    def get_user_info(self, user_id: int = None) -> dict:
+        """Return a user's informations. Defaults to self.login."""
+        # TODO: Docstring -> show example
+        url = IDENTITY_URL
+        if user_id is not None:
+            url = USER_INFO_URL.format(user_id=user_id)
+        result = self._query(url)
+        return result
+
+    def get_promotion(self, promotion_id: int = None) -> dict:
+        """Return a user's informations. Defaults to self.login."""
+        # TODO: Docstring -> show example
+        # NOTE: Is it actually the same output?
+        url = USER_PROMO_URL
+        if promotion_id is not None:
+            url = PROMOTION_URL.format(promo_id=promotion_id)
+        result = self._query(url)
+        return result
 
 class OldWrapper:
     """Simple HTTP client."""
@@ -73,27 +103,7 @@ class OldWrapper:
             cookie=None,
             **kwargs
     ):
-        """Initialise the EtnaWrapper.
-
-        Make a call to AUTH_URL, store the login and dump the password away.
-        Store a cookie.
-
-        :param str login: Login of the user
-        :param str password: Password of the user
-        :param int retries: Number of time to retry while requesting a cookie
-        """
-
-        self._login = kwargs.get('login', login)
-        password = kwargs.get('password', password)
-        self._retries = kwargs.get('retries', 5)
-        self._cookie = kwargs.get('cookie', cookie)
-        self._last_result = None
-
-        ids = [self._login, password, self._cookie]
-        if all(val is None for val in ids):
-            raise ValueError('Provide either login/password, or a cookie')
-        if self._cookie is None:
-            self._get_cookie(password)
+        pass
 
     def _get_cookie(self, password):
         post_data = {
@@ -103,53 +113,14 @@ class OldWrapper:
         resp = requests.post(AUTH_URL, data=post_data)
         self._cookie = resp.cookies.get_dict()
 
-    def _request_api(self, **kwargs):
-        """Wrap the calls the url, with the given arguments.
+    def _request_api(self, **kwargs):  # XXX: refactored
+        pass
 
-        :param str url: Url to call with the given arguments
-        :param str method: [POST | GET] Method to use on the request
-        :param int status: Expected status code
-        """
-        _url = kwargs.get('url')
-        _method = kwargs.get('method', 'GET')
-        _status = kwargs.get('status', 200)
+    def get_infos(self):  # XXX: refactored
+        pass
 
-        counter = 0
-        if _method not in ['GET', 'POST']:
-            raise ValueError('Method is not GET or POST')
-
-        while True:
-            try:
-                res = REQ[_method](_url, cookies=self._cookie)
-                if res.status_code == _status:
-                    break
-                else:
-                    raise BadStatusException(res.content)
-            except requests.exceptions.BaseHTTPError:
-                if counter < self._retries:
-                    counter += 1
-                    continue
-                raise MaxRetryError
-        self._last_result = res
-        return res
-
-    def get_infos(self):
-        """Get info about the current user.
-
-        :return: JSON
-        """
-
-        return self._request_api(url=IDENTITY_URL).json()
-
-    def get_infos_with_id(self, uid):
-        """Get info about a user based on his id.
-
-        :return: JSON
-        """
-
-        _logid = uid
-        _user_info_url = USER_INFO_URL.format(logid=_logid)
-        return self._request_api(url=_user_info_url).json()
+    def get_infos_with_id(self, uid):  # XXX: refactored
+        pass
 
     def get_promos(self):
         """Get informations about the user's promotion.

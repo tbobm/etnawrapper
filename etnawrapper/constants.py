@@ -5,7 +5,7 @@ MODULE_API = 'https://modules-api.etna-alternance.net'
 GSA_API = 'https://gsa-api.etna-alternance.net'
 
 IDENTITY_URL = ETNA_API + '/identity'
-USER_INFO_URL = ETNA_API + '/api/users/{logid}'
+USER_INFO_URL = ETNA_API + '/api/users/{user_id}'
 USER_PROMO_URL = PREP_API + '/promo'
 GRADES_URL = PREP_API + '/terms/{promo_id}/students/{login}/marks'
 NOTIF_URL = PREP_API + '/students/{login}/informations'
