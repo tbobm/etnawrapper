@@ -16,8 +16,6 @@ def test_wrapper_class():
     assert client is not None
     assert isinstance(client._req, requests.Session)
 
-    assert client == client
-
     # display
     _s = str(client)
     assert _s == "<etnawrapper.etna.EtnaWrapper(login='test_u', cookies={})>"
@@ -34,4 +32,8 @@ def test_wrapper_class():
     cookie_based = etna.EtnaWrapper('test_u', cookies={'jwt': 'abcdef'})
     assert cookie_based is not None
 
+    # equality
     assert client != cookie_based
+    assert client == client
+    with pytest.raises(NotImplementedError):
+        client == 42
