@@ -6,7 +6,7 @@ from etnawrapper import etna, constants
 
 
 @responses.activate
-def test_wrapper_creation():
+def test_wrapper_class():
     responses.add(responses.POST, constants.AUTH_URL)
     client = etna.EtnaWrapper('test_u', 'password')
     assert client is not None
@@ -15,6 +15,8 @@ def test_wrapper_creation():
     client = etna.EtnaWrapper('test_u', 'password', use_session=True)
     assert client is not None
     assert isinstance(client._req, requests.Session)
+
+    assert client == client
 
     # display
     _s = str(client)
@@ -31,3 +33,5 @@ def test_wrapper_creation():
     # cookie creation
     cookie_based = etna.EtnaWrapper('test_u', cookies={'jwt': 'abcdef'})
     assert cookie_based is not None
+
+    assert client != cookie_based
