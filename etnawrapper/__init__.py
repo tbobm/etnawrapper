@@ -4,14 +4,10 @@
 Allows accessing the module
 '''
 from .etna import (
-    BadStatusException,
     EtnaWrapper,
-    MaxRetryError,
 )
 
 
 __all__ = [
-    'BadStatusException',
     'EtnaWrapper',
-    'MaxRetryError',
 ]

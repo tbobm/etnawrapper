@@ -19,6 +19,7 @@ from .constants import (
     GRADES_URL,
     PICTURE_URL,
     SEARCH_URL,
+    ACTIVITIES_URL,
 )
 
 
@@ -58,14 +59,14 @@ class EtnaWrapper:
         return response.json()
 
     @staticmethod
-    def get_cookies(cls, login: str = None, password: str = None) -> str:
+    def get_cookies(login: str = None, password: str = None) -> str:
         """Fetch a Cookie."""
-        if login is None and cls._login is None:
+        if login is None:
             raise ValueError("missing login, can not authenticate")
         if password is None:
             raise ValueError("missing password, can not authenticate")
         data = {
-            'login': login or cls._login,
+            'login': login,
             'password': password
         }
         resp = requests.post(AUTH_URL, data=data)
@@ -126,19 +127,15 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
+    def get_project_activites(self, module: str) -> dict:
+        """Fetch activities related to `module`."""
+        url = ACTIVITIES_URL.format(module_id=module)
+        result = self._query(url)
+        return result
+
+
 class OldWrapper:
     """Simple HTTP client."""
-
-    def get_activities_for_project(self, module=None, **kwargs):
-        """Get the related activities of a project.
-
-        :param str module: Stages of a given module
-        :return: JSON
-        """
-
-        _module_id = kwargs.get('module', module)
-        _activities_url = ACTIVITIES_URL.format(module_id=_module_id)
-        return self._request_api(url=_activities_url).json()
 
     def get_group_for_activity(self, module=None, project=None, **kwargs):
         """Get groups for activity.
@@ -214,7 +211,5 @@ class OldWrapper:
 
 
 __all__ = (
-    'BadStatusException',
     'EtnaWrapper',
-    'MaxRetryError',
 )
