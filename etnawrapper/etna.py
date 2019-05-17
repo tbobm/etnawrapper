@@ -3,6 +3,7 @@
 # TODO: Implement a Session upon instantiation?
 # TODO: Cli ? :o
 # TODO: CLI.
+from datetime import datetime
 from typing import Union
 from io import BytesIO
 
@@ -21,7 +22,9 @@ from .constants import (
     SEARCH_URL,
     ACTIVITIES_URL,
     GROUPS_URL,
-    PROMOTION_URL,
+    GSA_EVENTS_URL,
+    GSA_LOGS_URL,
+    EVENTS_URL,
 )
 
 
@@ -167,56 +170,27 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
-class OldWrapper:
-    """Simple HTTP client."""
+    def get_log_events(self, login: str = None) -> dict:
+        """Get a user's log event, defaults to self.login."""
+        url = GSA_EVENTS_URL.format(login=login or self.login)
+        result = self._query(url)
+        return result
 
-    def get_log_events(self, login=None, **kwargs):
-        """Get a user's log events.
+    def get_logs(self, login: str = None) -> dict:
+        """Fetch a user's logs, defaults to self.login."""
+        url = GSA_LOGS_URL.format(login=login or self.login)
+        result = self._query(url)
+        return result
 
-        :param str login: User's login (Default: self.login)
-        :return: JSON
-        """
-
-        _login = kwargs.get(
-            'login',
-            login
+    def get_events(self, start_date: datetime, end_date: datetime, login: str = None) -> dict:
+        """Fetch a user's events, defaults to self.login."""
+        url = EVENTS_URL.format(
+            login=login or self.login,
+            start_date=start_date.isoformat(),
+            end_date=end_date.isoformat(),
         )
-        log_events_url = GSA_EVENTS_URL.format(login=_login)
-        return self._request_api(url=log_events_url).json()
-
-    def get_events(self, login=None, start_date=None, end_date=None, **kwargs):
-        """Get a user's events.
-
-        :param str login: User's login (Default: self.login)
-        :param str start_date: Start date
-        :param str end_date: To date
-        :return: JSON
-        """
-
-        _login = kwargs.get(
-            'login',
-            login
-        )
-        log_events_url = EVENTS_URL.format(
-            login=_login,
-            start_date=start_date,
-            end_date=end_date,
-        )
-        return self._request_api(url=log_events_url).json()
-
-    def get_logs(self, login=None, **kwargs):
-        """Get a user's logs.
-
-        :param str login: User's login (Default: self.login)
-        :return: JSON
-        """
-
-        _login = kwargs.get(
-            'login',
-            login
-        )
-        log_events_url = GSA_LOGS_URL.format(login=_login)
-        return self._request_api(url=log_events_url).json()
+        result = self._query(url)
+        return result
 
 
 __all__ = (
