@@ -39,6 +39,14 @@ class EtnaWrapper:
         else:
             self._req = requests
 
+    def __repr__(self):
+        return (
+            "<etnawrapper.etna.EtnaWrapper(login='{}', cookies={})>".format(
+                self.login,
+                self._cookies,
+            )
+        )
+
     def _query(self, url: str, method='GET', raw: bool = False, data=None) -> Union[dict, requests.Response]:
         """Perform a request using the `self._req` HTTP client.
 
