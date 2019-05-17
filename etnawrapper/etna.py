@@ -20,6 +20,8 @@ from .constants import (
     PICTURE_URL,
     SEARCH_URL,
     ACTIVITIES_URL,
+    GROUPS_URL,
+    PROMOTION_URL,
 )
 
 
@@ -153,33 +155,20 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
+    def get_group_for_activity(self, module: str, project: str) -> dict:
+        """Return group composition for the module/project tuple."""
+        url = GROUPS_URL.format(module_id=module, project_id=project)
+        result = self._query(url)
+        return result
+
+    def get_students(self, promotion_id: int) -> dict:
+        """Fetch every student bsaed on `promotion_id`."""
+        url = PROMOTION_URL.format(promo_id=promotion_id)
+        result = self._query(url)
+        return result
 
 class OldWrapper:
     """Simple HTTP client."""
-
-    def get_group_for_activity(self, module=None, project=None, **kwargs):
-        """Get groups for activity.
-
-        :param str module: Base module
-        :param str module: Project which contains the group requested
-        :return: JSON
-        """
-
-        _module_id = kwargs.get('module', module)
-        _project_id = kwargs.get('project', project)
-        _url = GROUPS_URL.format(module_id=_module_id, project_id=_project_id)
-        return self._request_api(url=_url).json()
-
-    def get_students(self, **kwargs):
-        """Get users by promotion id.
-
-        :param int promotion: Promotion ID
-        :return: JSON
-        """
-
-        _promotion_id = kwargs.get('promotion')
-        _url = PROMOTION_URL.format(promo_id=_promotion_id)
-        return self._request_api(url=_url).json()
 
     def get_log_events(self, login=None, **kwargs):
         """Get a user's log events.
