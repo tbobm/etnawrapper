@@ -18,6 +18,7 @@ from .constants import (
     NOTIF_URL,
     GRADES_URL,
     PICTURE_URL,
+    SEARCH_URL,
 )
 
 
@@ -119,19 +120,14 @@ class EtnaWrapper:
         result = self._query(url, raw=True)
         return result.content
 
+    def get_projects(self, login: str = None) -> dict:
+        """Fetch a student's projects base on the login."""
+        url = SEARCH_URL.format(login=login or self.login)
+        result = self._query(url)
+        return result
+
 class OldWrapper:
     """Simple HTTP client."""
-
-    def get_projects(self, **kwargs):
-        """Get a user's project.
-
-        :param str login: User's login (Default: self.login)
-        :return: JSON
-        """
-
-        _login = kwargs.get('login', self.login)
-        search_url = SEARCH_URL.format(login=_login)
-        return self._request_api(url=search_url).json()
 
     def get_activities_for_project(self, module=None, **kwargs):
         """Get the related activities of a project.
