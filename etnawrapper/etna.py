@@ -47,6 +47,18 @@ class EtnaWrapper:
             )
         )
 
+    def __eq__(self, obj):
+        if not isinstance(obj, EtnaWrapper):
+            raise NotImplementedError
+        return (
+            self.login == obj.login
+            and self._cookies == obj._cookies
+            and isinstance(self._req, type(obj._req))
+        )
+
+    def __neq__(self, obj):
+        return not self == obj
+
     def _query(self, url: str, method='GET', raw: bool = False, data=None) -> Union[dict, requests.Response]:
         """Perform a request using the `self._req` HTTP client.
 
