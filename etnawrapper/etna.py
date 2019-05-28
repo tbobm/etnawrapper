@@ -127,7 +127,7 @@ class EtnaWrapper:
         Defaults to self.login.
 
         """
-        url = ACTIVITY_URL.format(login or self.login)
+        url = ACTIVITY_URL.format(login=login or self.login)
         result = self._query(url)
         return result
 
@@ -136,7 +136,7 @@ class EtnaWrapper:
 
         If login is not set, defaults to self.login.
         """
-        url = NOTIF_URL.format(login or self.login)
+        url = NOTIF_URL.format(login=login or self.login)
         result = self._query(url)
         return result
 
