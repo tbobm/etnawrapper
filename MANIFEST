@@ -3,4 +3,7 @@ README.rst
 setup.cfg
 setup.py
 etnawrapper/__init__.py
+etnawrapper/constants.py
+etnawrapper/errors.py
 etnawrapper/etna.py
+etnawrapper/main.py
