@@ -33,7 +33,7 @@ __author__ = 'Theo Massard <massar_t@etna-alternance.net>'
 
 class EtnaWrapper:
     """"""
-    def __init__(self, login: str, password: str = None, cookies: dict = None, use_session: bool = False):
+    def __init__(self, login: str, password: str = None, cookies: dict = None, use_session: bool = False, headers: dict = None):
         self.login = login
         self._cookies = cookies
         if cookies is None:
@@ -43,6 +43,7 @@ class EtnaWrapper:
             self._req = requests.Session()
         else:
             self._req = requests
+        self.headers = headers
 
     def __repr__(self):
         return (
