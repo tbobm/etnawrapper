@@ -8,11 +8,11 @@ from etnawrapper import etna, constants
 @responses.activate
 def test_wrapper_class():
     responses.add(responses.POST, constants.AUTH_URL)
-    client = etna.EtnaWrapper('test_u', 'password')
+    client = etna.EtnaWrapper("test_u", "password")
     assert client is not None
     assert isinstance(client._req, type(requests))
 
-    client = etna.EtnaWrapper('test_u', 'password', use_session=True)
+    client = etna.EtnaWrapper("test_u", "password", use_session=True)
     assert client is not None
     assert isinstance(client._req, requests.Session)
 
@@ -22,14 +22,14 @@ def test_wrapper_class():
 
     # missing password
     with pytest.raises(ValueError):
-        etna.EtnaWrapper('sample', None)
+        etna.EtnaWrapper("sample", None)
 
     # missing login
     with pytest.raises(ValueError):
         etna.EtnaWrapper(None)
 
     # cookie creation
-    cookie_based = etna.EtnaWrapper('test_u', cookies={'jwt': 'abcdef'})
+    cookie_based = etna.EtnaWrapper("test_u", cookies={"jwt": "abcdef"})
     assert cookie_based is not None
 
     # equality

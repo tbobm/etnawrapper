@@ -1,8 +1,11 @@
 """
 ETNA-related errors.
 """
+
+
 class MaxRetryError(Exception):
     """Happen when the API stops responding."""
+
     pass
 
 

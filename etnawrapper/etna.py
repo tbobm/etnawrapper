@@ -28,12 +28,20 @@ from .constants import (
 )
 
 
-__author__ = 'Theo Massard <massar_t@etna-alternance.net>'
+__author__ = "Theo Massard <massar_t@etna-alternance.net>"
 
 
 class EtnaWrapper:
     """"""
-    def __init__(self, login: str, password: str = None, cookies: dict = None, use_session: bool = False, headers: dict = None):
+
+    def __init__(
+        self,
+        login: str,
+        password: str = None,
+        cookies: dict = None,
+        use_session: bool = False,
+        headers: dict = None,
+    ):
         self.login = login
         self._cookies = cookies
         if cookies is None:
@@ -46,11 +54,8 @@ class EtnaWrapper:
         self.headers = headers
 
     def __repr__(self):
-        return (
-            "<etnawrapper.etna.EtnaWrapper(login='{}', cookies={})>".format(
-                self.login,
-                self._cookies,
-            )
+        return "<etnawrapper.etna.EtnaWrapper(login='{}', cookies={})>".format(
+            self.login, self._cookies
         )
 
     def __eq__(self, obj):
@@ -65,7 +70,9 @@ class EtnaWrapper:
     def __neq__(self, obj):
         return not self == obj
 
-    def _query(self, url: str, method='GET', raw: bool = False, data=None) -> Union[dict, requests.Response]:
+    def _query(
+        self, url: str, method="GET", raw: bool = False, data=None
+    ) -> Union[dict, requests.Response]:
         """Perform a request using the `self._req` HTTP client.
 
         Upon requesting a non-standard URL (not returning JSON),
@@ -78,7 +85,7 @@ class EtnaWrapper:
             cookies=self._cookies,
             json=data,
             headers=self.headers,
-            timeout=50
+            timeout=50,
         )
         if raw:
             return response
@@ -91,10 +98,7 @@ class EtnaWrapper:
             raise ValueError("missing login, can not authenticate")
         if password is None:
             raise ValueError("missing password, can not authenticate")
-        data = {
-            'login': login,
-            'password': password
-        }
+        data = {"login": login, "password": password}
         resp = requests.post(AUTH_URL, data=data)
         return resp.cookies.get_dict()
 
@@ -183,7 +187,9 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
-    def get_events(self, start_date: datetime, end_date: datetime, login: str = None) -> dict:
+    def get_events(
+        self, start_date: datetime, end_date: datetime, login: str = None
+    ) -> dict:
         """Fetch a user's events, defaults to self.login."""
         url = EVENTS_URL.format(
             login=login or self.login,
@@ -194,6 +200,4 @@ class EtnaWrapper:
         return result
 
 
-__all__ = (
-    'EtnaWrapper',
-)
+__all__ = ("EtnaWrapper",)
