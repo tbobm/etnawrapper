@@ -25,6 +25,7 @@ from .constants import (
     GSA_EVENTS_URL,
     GSA_LOGS_URL,
     EVENTS_URL,
+    DECLARATION_URL,
 )
 
 
@@ -197,6 +198,32 @@ class EtnaWrapper:
             end_date=end_date.isoformat(),
         )
         result = self._query(url)
+        return result
+
+    def declare_log(self, module_id: int, activity_id: int, content: dict):
+        """Send a log declaration for module_id/activity_id with `data`.
+
+        Content should be of the following form:
+
+        >>> content = {
+                "module": 1111,
+                "activity": 22222,
+                "declaration": {
+                    "start": "2019-05-6 10:00",
+                    "end": "2019-05-6 10:00",
+                    "content": "Objectifs: do things\n" \
+                               "Actions: Did stuff\n" \
+                               "Resultats: Got stuff done\n"
+                },
+            }
+        """
+        url = DECLARATION_URL.format(
+            login=self.login,
+            module_id=module_id,
+            activity_id=activity_id,
+        )
+        print(content)
+        result = self._query(url, method='POST', data=content)
         return result
 
 

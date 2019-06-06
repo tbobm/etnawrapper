@@ -37,3 +37,22 @@ def test_wrapper_class():
     assert client == client
     with pytest.raises(NotImplementedError):
         client == 42
+
+
+@responses.activate
+def test_declaration(client: etna.EtnaWrapper, login: str):
+    m_id, a_id = 18, 22
+    start, end = '2019-05-6 9:00', '2019-05-6 9:00'
+    content = {
+        'module': m_id,
+        'activity': a_id,
+        'declaration': {
+            'start': start,
+            'end': end,
+            'content': 'asdf\nfdsa',
+        },
+    }
+    url = constants.DECLARATION_URL.format(login=login, module_id=m_id, activity_id=a_id)
+    responses.add(responses.POST, url, json={'declared': True})
+    result = client.declare_log(m_id, a_id, content)
+    assert result['declared']
