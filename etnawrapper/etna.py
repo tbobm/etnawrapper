@@ -222,7 +222,6 @@ class EtnaWrapper:
             module_id=module_id,
             activity_id=activity_id,
         )
-        print(content)
         result = self._query(url, method='POST', data=content)
         return result
 
