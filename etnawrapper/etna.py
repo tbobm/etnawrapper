@@ -37,7 +37,7 @@ class EtnaWrapper:
 
     def __init__(
         self,
-        login: str,
+        login: str = None,
         password: str = None,
         cookies: dict = None,
         use_session: bool = False,
