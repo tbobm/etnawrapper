@@ -3,7 +3,7 @@ import os
 from distutils.core import setup
 
 
-__version__ = "2.2.1"
+__version__ = "2.2.2"
 URL = "https://github.com/massard-t/etnawrapper/archive/{}.tar.gz".format(__version__)
 
 BASE_DIR = os.path.dirname(__file__)
@@ -16,7 +16,7 @@ with open(os.path.join(BASE_DIR, "requirements.txt")) as f:
 setup(
     name="etnawrapper",
     packages=["etnawrapper"],
-    install_requires=requirements,
+    install_requires=['requests'],
     version=__version__,
     description="API wrapper for ETNA' APIs",
     author="Theo 'Bob' Massard",
