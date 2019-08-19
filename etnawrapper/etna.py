@@ -89,8 +89,8 @@ class EtnaWrapper:
             timeout=50,
         )
         if raw:
-            return response
-        return response.json()
+            return response  # type: requests.Response
+        return response.json()  # type: dict
 
     @staticmethod
     def get_cookies(login: str = None, password: str = None) -> str:
@@ -200,14 +200,13 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
-    def declare_log(self, module_id: int, activity_id: int, content: dict):
-        """Send a log declaration for module_id/activity_id with `data`.
+    def declare_log(self, module_id: int, content: dict):
+        """Send a log declaration for module_id with `content`.
 
         Content should be of the following form:
 
         >>> content = {
                 "module": 1111,
-                "activity": 22222,
                 "declaration": {
                     "start": "2019-05-6 10:00",
                     "end": "2019-05-6 10:00",
@@ -220,8 +219,8 @@ class EtnaWrapper:
         url = DECLARATION_URL.format(
             login=self.login,
             module_id=module_id,
-            activity_id=activity_id,
         )
+        result = self._query(url, method='OPTIONS', raw=True)
         result = self._query(url, method='POST', data=content)
         return result
 

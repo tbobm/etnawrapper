@@ -1,4 +1,4 @@
-INTRA_API = "https://prepintra-api.etna-alternance.net"
+INTRA_API = "https://intra-api.etna-alternance.net"
 ETNA_API = "https://auth.etna-alternance.net"
 AUTH_URL = "https://auth.etna-alternance.net/login"
 MODULE_API = "https://modules-api.etna-alternance.net"
@@ -19,4 +19,4 @@ GSA_EVENTS_URL = GSA_API + "/students/{login}/events"
 GSA_LOGS_URL = GSA_API + "/students/{login}/logs"
 
 EVENTS_URL = INTRA_API + "/students/{login}/events?end={end_date}&start={start_date}"
-DECLARATION_URL = INTRA_API + "/students/{login}/modules/{module_id}/activities/{activity_id}/declareLogs"
+DECLARATION_URL = INTRA_API + "/modules/{module_id}/declareLogs"
