@@ -26,6 +26,7 @@ from .constants import (
     GSA_LOGS_URL,
     EVENTS_URL,
     DECLARATION_URL,
+    CONVERSATIONS_URL,
 )
 
 
@@ -223,6 +224,14 @@ class EtnaWrapper:
         result = self._query(url, method='OPTIONS', raw=True)
         result = self._query(url, method='POST', data=content)
         return result
+
+    def get_latests_conversations(self, user_id: int = None) -> dict:
+        """Return the list of posts for a user."""
+        url = CONVERSATIONS_URL
+        if user_id is not None:
+            url = CONVERSATIONS_URL.format(user_id=user_id)
+        result = self._query(url)
+        return(result)
 
 
 __all__ = ("EtnaWrapper",)
