@@ -226,7 +226,7 @@ class EtnaWrapper:
         return result
 
     def get_latests_conversations(self, user_id: int = None) -> dict:
-        """Return the list of posts for a user."""
+        """Return the list of conversations for a user."""
         url = CONVERSATIONS_URL
         if user_id is not None:
             url = CONVERSATIONS_URL.format(user_id=user_id)
