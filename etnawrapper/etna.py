@@ -202,7 +202,7 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
-    def get_conversations(self, user_id: int) -> dict:
+    def get_conversations(self, user_id: int, start: int = None, size: int = None) -> dict:
         """Return the list of conversations for a user.
 
         Requires read permission for this user_id.
@@ -210,7 +210,12 @@ class EtnaWrapper:
         to ensure readability.
         """
         url = CONVERSATIONS_URL.format(user_id=user_id)
-        result = self._query(url)
+        params = dict()
+        if start is not None:
+            params['start'] = start
+        if size is not None:
+            params['size'] = size
+        result = self._query(url, params=params)
         return(result)
 
     def declare_log(self, module_id: int, content: dict):
