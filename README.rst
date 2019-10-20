@@ -33,3 +33,8 @@ Contibuting
 
 Contibutions are welcome. Simply fork the project and make a pull
 request.
+
+Contributors
+-----------
+
+- `matteyeux <https://github.com/matteyeux/>`_
