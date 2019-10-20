@@ -201,6 +201,17 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
+    def get_conversations(self, user_id: int) -> dict:
+        """Return the list of conversations for a user.
+
+        Requires read permission for this user_id.
+        Use this method with a user_id corresponding to your login
+        to ensure readability.
+        """
+        url = CONVERSATIONS_URL.format(user_id=user_id)
+        result = self._query(url)
+        return(result)
+
     def declare_log(self, module_id: int, content: dict):
         """Send a log declaration for module_id with `content`.
 
@@ -224,14 +235,6 @@ class EtnaWrapper:
         result = self._query(url, method='OPTIONS', raw=True)
         result = self._query(url, method='POST', data=content)
         return result
-
-    def get_latests_conversations(self, user_id: int = None) -> dict:
-        """Return the list of conversations for a user."""
-        url = CONVERSATIONS_URL
-        if user_id is not None:
-            url = CONVERSATIONS_URL.format(user_id=user_id)
-        result = self._query(url)
-        return(result)
 
 
 __all__ = ("EtnaWrapper",)
