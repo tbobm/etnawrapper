@@ -26,6 +26,7 @@ from .constants import (
     GSA_LOGS_URL,
     EVENTS_URL,
     DECLARATION_URL,
+    CONVERSATIONS_URL,
 )
 
 
@@ -199,6 +200,17 @@ class EtnaWrapper:
         )
         result = self._query(url)
         return result
+
+    def get_conversations(self, user_id: int) -> dict:
+        """Return the list of conversations for a user.
+
+        Requires read permission for this user_id.
+        Use this method with a user_id corresponding to your login
+        to ensure readability.
+        """
+        url = CONVERSATIONS_URL.format(user_id=user_id)
+        result = self._query(url)
+        return(result)
 
     def declare_log(self, module_id: int, content: dict):
         """Send a log declaration for module_id with `content`.

@@ -20,3 +20,5 @@ GSA_LOGS_URL = GSA_API + "/students/{login}/logs"
 
 EVENTS_URL = INTRA_API + "/students/{login}/events?end={end_date}&start={start_date}"
 DECLARATION_URL = INTRA_API + "/modules/{module_id}/declareLogs"
+
+CONVERSATIONS_URL = INTRA_API + "/users/{user_id}/conversations"
