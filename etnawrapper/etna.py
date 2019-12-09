@@ -26,6 +26,7 @@ from .constants import (
     GSA_LOGS_URL,
     EVENTS_URL,
     DECLARATION_URL,
+    DECLARATIONS_URL,
     CONVERSATIONS_URL,
 )
 
@@ -213,6 +214,22 @@ class EtnaWrapper:
         params = dict()
         if start is not None:
             params['start'] = start
+        if size is not None:
+            params['size'] = size
+        result = self._query(url, params=params)
+        return(result)
+
+    def get_declarations(self, login: str = None, start: str = None, end: str = None, size: int = None) -> dict:
+        """Return the list of declarations for a user.
+
+        Requires read permission for this login.
+        """
+        url = DECLARATIONS_URL.format(login=self.login)
+        params = dict()
+        if start is not None:
+            params['start'] = start
+        if end is not None:
+            params['end'] = end
         if size is not None:
             params['size'] = size
         result = self._query(url, params=params)
