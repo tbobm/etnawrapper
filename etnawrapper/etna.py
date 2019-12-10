@@ -219,7 +219,7 @@ class EtnaWrapper:
         result = self._query(url, params=params)
         return(result)
 
-    def get_declarations(self, login: str = None, start: str = None, end: str = None) -> dict:
+    def get_declarations(self, start: str = None, end: str = None) -> dict:
         """Return the list of declarations for a user.
 
         Requires read permission for this login.
