@@ -217,7 +217,7 @@ class EtnaWrapper:
         if size is not None:
             params['size'] = size
         result = self._query(url, params=params)
-        return(result)
+        return result
 
     def get_declarations(self, start: str = None, end: str = None) -> dict:
         """Return the list of declarations for a user.
@@ -231,7 +231,7 @@ class EtnaWrapper:
         if end is not None:
             params['end'] = end
         result = self._query(url, params=params)
-        return(result)
+        return result
 
     def declare_log(self, module_id: int, content: dict):
         """Send a log declaration for module_id with `content`.
