@@ -3,6 +3,7 @@ ETNA_API = "https://auth.etna-alternance.net"
 AUTH_URL = "https://auth.etna-alternance.net/login"
 MODULE_API = "https://modules-api.etna-alternance.net"
 GSA_API = "https://gsa-api.etna-alternance.net"
+TICKET_API = "https://tickets.etna-alternance.net"
 
 IDENTITY_URL = ETNA_API + "/identity"
 USER_INFO_URL = ETNA_API + "/api/users/{user_id}"
@@ -23,3 +24,5 @@ DECLARATION_URL = INTRA_API + "/modules/{module_id}/declareLogs"
 DECLARATIONS_URL = GSA_API + "/students/{login}/declarations"
 
 CONVERSATIONS_URL = INTRA_API + "/users/{user_id}/conversations"
+
+TICKET_URL = TICKET_API + "/api/tasks.json"

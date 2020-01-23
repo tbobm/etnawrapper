@@ -28,6 +28,7 @@ from .constants import (
     DECLARATION_URL,
     DECLARATIONS_URL,
     CONVERSATIONS_URL,
+    TICKET_URL,
 )
 
 
@@ -255,6 +256,32 @@ class EtnaWrapper:
         )
         result = self._query(url, method='OPTIONS', raw=True)
         result = self._query(url, method='POST', data=content)
+        return result
+
+    def open_ticket(self, content: dict):
+        """Open a ticket.
+        >>> content = {
+                "tags":[
+                    "pedago",
+                    "suivi",
+                    "retard"
+                ],
+                "users":[
+                   {
+                      "role":"student",
+                      "login":"logi_n",
+                      "email":"user@mail.net"
+                   }
+                ],
+                "title": "I'm going to be late",
+                "message": "Sorry I'm late"
+            }
+        """
+
+        url = TICKET_URL
+        result = self._query(url, method='OPTIONS', raw=True)
+        result = self._query(url, method='POST', data=content)
+
         return result
 
 
