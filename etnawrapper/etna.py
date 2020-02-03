@@ -4,7 +4,7 @@
 # TODO: Cli ? :o
 # TODO: CLI.
 from datetime import datetime
-from typing import Union
+from typing import Union, List
 from io import BytesIO
 
 import requests
@@ -28,6 +28,7 @@ from .constants import (
     DECLARATION_URL,
     DECLARATIONS_URL,
     CONVERSATIONS_URL,
+    TICKET_URL,
 )
 
 
@@ -255,6 +256,20 @@ class EtnaWrapper:
         )
         result = self._query(url, method='OPTIONS', raw=True)
         result = self._query(url, method='POST', data=content)
+        return result
+
+    def open_ticket(self, title: str, message: str, tags: List[str] = None, users: List[str] = None):
+        """Open a ticket."""
+        content = {}
+        content['title'] = title
+        content['message'] = message
+        content['tags'] = tags
+        content['users'] = users
+
+        url = TICKET_URL
+        result = self._query(url, method='OPTIONS', raw=True)
+        result = self._query(url, method='POST', data=content)
+
         return result
 
 
