@@ -126,6 +126,14 @@ class EtnaWrapper:
         result = self._query(url)
         return result
 
+    def get_user_promotion(self, login: str = None) -> dict:
+        url = USER_PROMO_URL
+        if login is not None:
+            url = USER_PROMO_URL + "?login=" + login
+
+        result = self._query(url)
+        return result
+
     def get_current_activities(self, login: str = None) -> dict:
         """Return a user's current activities.
 
