@@ -127,6 +127,7 @@ class EtnaWrapper:
         return result
 
     def get_user_promotion(self, login: str = None) -> dict:
+        """Return user's promotions."""
         url = USER_PROMO_URL
         if login is not None:
             url = USER_PROMO_URL + "?login=" + login
