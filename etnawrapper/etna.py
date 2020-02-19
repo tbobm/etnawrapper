@@ -220,7 +220,7 @@ class EtnaWrapper:
         Use this method with a user_id corresponding to your login
         to ensure readability.
         """
-        url = CONVERSATIONS_URL.format(user_id=user_id)
+        url = CONVERSATIONS_URL.format(user_id=user_id, start=start, size=size)
         params = dict()
         if start is not None:
             params['start'] = start

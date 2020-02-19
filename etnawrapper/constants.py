@@ -23,6 +23,6 @@ EVENTS_URL = INTRA_API + "/students/{login}/events?end={end_date}&start={start_d
 DECLARATION_URL = INTRA_API + "/modules/{module_id}/declareLogs"
 DECLARATIONS_URL = GSA_API + "/students/{login}/declarations"
 
-CONVERSATIONS_URL = INTRA_API + "/users/{user_id}/conversations"
+CONVERSATIONS_URL = INTRA_API + "/users/{user_id}/conversations?from={start}&size={size}"
 
 TICKET_URL = TICKET_API + "/api/tasks.json"
