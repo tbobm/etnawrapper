@@ -223,7 +223,7 @@ class EtnaWrapper:
         url = CONVERSATIONS_URL.format(user_id=user_id)
         params = dict()
         if start is not None:
-            params['start'] = start
+            params['from'] = start
         if size is not None:
             params['size'] = size
         result = self._query(url, params=params)
