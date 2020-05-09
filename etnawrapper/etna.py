@@ -29,6 +29,7 @@ from .constants import (
     DECLARATIONS_URL,
     CONVERSATIONS_URL,
     TICKET_URL,
+    CLOSE_TICKET_URL,
 )
 
 
@@ -279,6 +280,12 @@ class EtnaWrapper:
         result = self._query(url, method='OPTIONS', raw=True)
         result = self._query(url, method='POST', data=content)
 
+        return result
+
+    def close_ticket(self, ticket_id: int):
+        """Close a ticket."""
+        url = CLOSE_TICKET_URL.format(task_id=ticket_id)
+        result = self._query(url, method='DELETE')
         return result
 
 

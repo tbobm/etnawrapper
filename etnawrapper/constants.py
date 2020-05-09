@@ -26,4 +26,4 @@ DECLARATIONS_URL = GSA_API + "/students/{login}/declarations"
 CONVERSATIONS_URL = INTRA_API + "/users/{user_id}/conversations"
 
 TICKET_URL = TICKET_API + "/tasks.json"
-
+CLOSE_TICKET_URL = TICKET_API + "/tasks/{task_id}.json"
