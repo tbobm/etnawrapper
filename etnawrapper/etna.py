@@ -29,6 +29,7 @@ from .constants import (
     DECLARATIONS_URL,
     CONVERSATIONS_URL,
     TICKET_URL,
+    TICKETS_URL,
     CLOSE_TICKET_URL,
 )
 
@@ -288,9 +289,11 @@ class EtnaWrapper:
         result = self._query(url, method='DELETE')
         return result
 
-    def get_tickets(self):
+    def get_tickets(self, ticket_id: int = None):
         """Fetch the list of tickets."""
-        url = TICKET_URL
+        url = TICKETS_URL
+        if ticket_id is not None:
+            url = TICKET_URL.format(task_id=ticket_id)
         result = self._query(url)
         return result
 
