@@ -288,5 +288,11 @@ class EtnaWrapper:
         result = self._query(url, method='DELETE')
         return result
 
+    def get_tickets(self):
+        """Fetch the list of tickets."""
+        url = TICKET_URL
+        result = self._query(url)
+        return result
+
 
 __all__ = ("EtnaWrapper",)
