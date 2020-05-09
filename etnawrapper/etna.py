@@ -277,7 +277,7 @@ class EtnaWrapper:
         content['tags'] = tags
         content['users'] = users
 
-        url = TICKET_URL
+        url = TICKETS_URL
         result = self._query(url, method='OPTIONS', raw=True)
         result = self._query(url, method='POST', data=content)
 
