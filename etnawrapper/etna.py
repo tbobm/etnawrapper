@@ -165,9 +165,11 @@ class EtnaWrapper:
         result = self._query(url, raw=True)
         return result.content
 
-    def get_projects(self, login: str = None) -> dict:
+    def get_projects(self, login: str = None, date: datetime = None) -> dict:
         """Fetch a student's projects base on the login."""
         url = SEARCH_URL.format(login=login or self.login)
+        if date is not None:
+            url += "?date=" + date
         result = self._query(url)
         return result
 
