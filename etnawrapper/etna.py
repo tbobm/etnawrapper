@@ -30,7 +30,6 @@ from .constants import (
     CONVERSATIONS_URL,
     TICKET_URL,
     TICKETS_URL,
-    CLOSE_TICKET_URL,
 )
 
 
@@ -285,7 +284,7 @@ class EtnaWrapper:
 
     def close_ticket(self, ticket_id: int):
         """Close a ticket."""
-        url = CLOSE_TICKET_URL.format(task_id=ticket_id)
+        url = TICKET_URL.format(task_id=ticket_id)
         result = self._query(url, method='DELETE')
         return result
 
