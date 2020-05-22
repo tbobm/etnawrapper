@@ -288,11 +288,16 @@ class EtnaWrapper:
         result = self._query(url, method='DELETE')
         return result
 
-    def get_tickets(self, ticket_id: int = None):
+    def get_tickets(self):
         """Fetch the list of tickets."""
         url = TICKETS_URL
-        if ticket_id is not None:
-            url = TICKET_URL.format(task_id=ticket_id)
+        result = self._query(url)
+        return result
+    
+    
+    def get_ticket(self, ticket_id: int):
+        """Fetch the ticket matching `ticket_id`."""
+        url = TICKET_URL.format(task_id=ticket_id)
         result = self._query(url)
         return result
 
