@@ -29,6 +29,7 @@ from .constants import (
     DECLARATIONS_URL,
     CONVERSATIONS_URL,
     TICKET_URL,
+    TICKETS_URL,
 )
 
 
@@ -279,10 +280,29 @@ class EtnaWrapper:
         content['tags'] = tags
         content['users'] = users
 
-        url = TICKET_URL
+        url = TICKETS_URL
         result = self._query(url, method='OPTIONS', raw=True)
         result = self._query(url, method='POST', data=content)
 
+        return result
+
+    def close_ticket(self, ticket_id: int):
+        """Close a ticket."""
+        url = TICKET_URL.format(task_id=ticket_id)
+        result = self._query(url, method='DELETE')
+        return result
+
+    def get_tickets(self):
+        """Fetch the list of tickets."""
+        url = TICKETS_URL
+        result = self._query(url)
+        return result
+    
+    
+    def get_ticket(self, ticket_id: int):
+        """Fetch the ticket matching `ticket_id`."""
+        url = TICKET_URL.format(task_id=ticket_id)
+        result = self._query(url)
         return result
 
 
