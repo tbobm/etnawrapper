@@ -7,7 +7,8 @@ URL = "https://github.com/massard-t/etnawrapper/archive/{}.tar.gz".format(__vers
 setup(
     name="etnawrapper",
     packages=["etnawrapper"],
-    install_requires=['requests'],
+    # TODO: Use requiremnts.txt
+    install_requires=['requests', 'click', 'arrow'],
     version=__version__,
     description="API wrapper for ETNA' APIs",
     author="Theo 'Bob' Massard",
@@ -22,4 +23,5 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
     ],
+    entry_points={"console_scripts": ["etna=etnawrapper.client:main"]},
 )

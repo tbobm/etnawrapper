@@ -19,6 +19,22 @@ Usage
     wrapper.get_infos()
     # It should return informations about your profile
 
+Tools
+------------
+This package provides an executable called `etna`.
+Using this program, you will be able to get informations without developping your own implementations.
+
+Current features:
+
+- List current activities
+
+Below is an example usage of this program:
+
+.. code:: bash
+
+    $ etna activities
+    # Acitivities per module
+
 Installation
 ------------
 
