@@ -35,6 +35,14 @@ Below is an example usage of this program:
     $ etna activities
     # Acitivities per module
 
+In order to enable autocompletion, please refer to `click's autocomplete documentation <https://click.palletsprojects.com/en/7.x/bashcomplete/>`_
+
+For bash:
+
+.. code:: bash
+    eval "$(_ETNA_COMPLETE=source_bash etna )"
+
+
 Installation
 ------------
 
