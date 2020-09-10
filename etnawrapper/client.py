@@ -8,6 +8,14 @@ import click
 from etnawrapper import EtnaWrapper
 
 
+CURSOR_UP_ONE = '\x1b[1A'
+ERASE_LINE = '\x1b[2K'
+
+
+def _clear_line():
+    print(CURSOR_UP_ONE + ERASE_LINE, end='')
+
+
 def display_current_projects(projects: typing.List[typing.Dict]):
     """Pretty print current projects with end date."""
     fmt_p = [f"{project['name']} ({project['date_end']})" for project in projects]
@@ -33,26 +41,69 @@ def display_current_quests(quests: typing.List[typing.Dict], show_all=False):
             click.secho(f"       {stage['name']} {(stage['end'])}", fg='green')
 
 
+@click.group(invoke_without_command=True)
+@click.pass_context
+def activities(ctx):
+    """Interact with your activities."""
+    if ctx.invoked_subcommand is None:
+        list_current_activities(False)
+
+
 @click.group()
-def activities():
-    """Click command group."""
+def conversations():
+    """Interact with your profile's conversations."""
 
 
-@activities.command(name='activities')
+@click.group()
+def cli():
+    """CLI utility to interact with ETNA's APIs."""
+
+
+@conversations.command(name='list')
+@click.option(
+    '--count',
+    help='Number of conversation to display',
+    type=int,
+    default=3,
+)
+def list_latest_conversations(count):
+    etna = get_wrapper()
+    click.secho(f"Fetching conversations for {etna.login}")
+    infos = etna.get_user_info()
+    response = etna.get_conversations(infos['id'], size=count)
+    _clear_line()
+    # TODO: Maybe cache the user_id of the author to
+    #       avoid querying the same profile
+    for conversation in response['hits']:
+        infos = etna.get_user_info(conversation['last_message']['user'])
+        identifier = conversation['metas'].get('uv_name', 'students')
+        wall_name = conversation['metas']['wall-name']
+        message = conversation['last_message']['content'].replace('\n\n', '\n')
+
+        click.secho(conversation['title'], bold=True, fg='blue')
+        click.secho(f"{identifier} - {wall_name}", underline=True)
+        click.secho(f"{infos['login']} - {infos['firstname']} {infos['lastname']}", fg='red')
+        click.secho(message)
+
+
+
+@activities.command(name='list')
 @click.option(
     '--full',
     help='Display past stages.',
     type=bool,
     is_flag=True,
 )
+def _wrap_list_activities(full):
+    list_current_activities(full)
+
+
 def list_current_activities(full):
     """List the current activities for the authenticated student."""
     etna = get_wrapper()
     click.secho(f"Fetching activities for {etna.login}")
-    CURSOR_UP_ONE = '\x1b[1A'
-    ERASE_LINE = '\x1b[2K'
     activities = etna.get_current_activities()
-    click.secho(CURSOR_UP_ONE + ERASE_LINE)
+    _clear_line()
     for activity, content in activities.items():
         quests = content['quest']
         types = []
@@ -77,7 +128,9 @@ def get_wrapper():
 
 
 def main():
-    activities()
+    cli.add_command(activities)
+    cli.add_command(conversations)
+    cli()
 
 
 if __name__ == '__main__':
