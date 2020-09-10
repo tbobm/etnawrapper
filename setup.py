@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 
-__version__ = "2.9.0"
+__version__ = "2.10.0"
 URL = "https://github.com/massard-t/etnawrapper/archive/{}.tar.gz".format(__version__)
 
 setup(
