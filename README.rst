@@ -52,6 +52,19 @@ This package is available on Pypi. Simply install it using:
 
     $ pip install etnawrapper
 
+
+Documentation
+------------
+
+You can generate the module documentation using:
+
+.. code:: console
+
+    $ pip install -r requirements-doc.txt
+    $ make html
+    $ cd build/html && python -m http.server
+    Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+
 Contibuting
 -----------
 
