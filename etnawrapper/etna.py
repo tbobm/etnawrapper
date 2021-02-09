@@ -253,20 +253,16 @@ class EtnaWrapper:
 
         Content should be of the following form:
 
-        .. code-block:: javascript
-
-            {
+        >>> content = {
                 "module": 1111,
                 "declaration": {
                     "start": "2019-05-6 10:00",
                     "end": "2019-05-6 10:00",
-                    "content": "Objectifs: do things"
-                               "Actions: Did stuff"
-                               "Resultats: Got stuff done"
+                    "content": "Objectifs: do things\n" \
+                               "Actions: Did stuff\n" \
+                               "Resultats: Got stuff done\n"
                 },
             }
-
-
         """
         url = DECLARATION_URL.format(
             login=self.login,
