@@ -63,6 +63,18 @@ This package is available on Pypi. Simply install it using:
 
     $ pip install etnawrapper
 
+Testing
+-------
+
+This package is available on Pypi. Simply install it using:
+
+.. code:: bash
+
+    git clone https://github.com/tbobm/etnawrapper
+    cd etnawrapper
+    pip install -e .
+    pip install -r requirements-dev.txt
+    pytest
 
 Documentation
 ------------
