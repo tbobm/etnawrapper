@@ -16,7 +16,7 @@ Usage
     wrapper = EtnaWrapper(login='your_login', password='your_passwd')
 
     # In order to check if you can access the APIs, try this:
-    wrapper.get_infos()
+    wrapper.get_user_info()
     # It should return informations about your profile
 
 Tools
