@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 """Client for ETNA's APIs"""
-# TODO: Implement a Session upon instantiation?
-# TODO: Cli ? :o
-# TODO: CLI.
 from datetime import datetime
 from typing import Union, List
 from io import BytesIO
 
 import requests
 
-from .constants import (
+from etnawrapper.constants import (
     AUTH_URL,
     IDENTITY_URL,
     USER_INFO_URL,
@@ -37,7 +34,7 @@ __author__ = "Theo Massard <massar_t@etna-alternance.net>"
 
 
 class EtnaWrapper:
-    """"""
+    """Multi-API client for ETNA services."""
 
     def __init__(
         self,
@@ -94,8 +91,8 @@ class EtnaWrapper:
             timeout=50,
         )
         if raw:
-            return response  # type: requests.Response
-        return response.json()  # type: dict
+            return response
+        return response.json()
 
     @staticmethod
     def get_cookies(login: str = None, password: str = None) -> str:
