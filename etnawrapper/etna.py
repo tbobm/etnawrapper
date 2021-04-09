@@ -48,7 +48,6 @@ class EtnaWrapper:
         self._cookies = cookies
         if cookies is None:
             self._cookies = self.get_cookies(login, password)
-        # XXX: be careful about this one
         if use_session:
             self._req = requests.Session()
         else:
@@ -56,8 +55,8 @@ class EtnaWrapper:
         self.headers = headers
 
     def __repr__(self):
-        return "<etnawrapper.etna.EtnaWrapper(login='{}', cookies={})>".format(
-            self.login, self._cookies
+        return "<etnawrapper.etna.EtnaWrapper(login='{}')>".format(
+            self.login,
         )
 
     def __eq__(self, obj):
