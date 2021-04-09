@@ -105,8 +105,21 @@ class EtnaWrapper:
         return resp.cookies.get_dict()
 
     def get_user_info(self, user_id: int = None) -> dict:
-        """Return a user's informations. Defaults to self.login."""
-        # TODO: Docstring -> show example
+        """Return a user's informations. Defaults to self.login.
+
+        >>> client = EtnaWrapper()
+        >>> client.get_user_info()
+        ... {
+               'id': 1,
+               'login': 'user_n',
+               'email': 'email@etna-alternance.net',
+               'logas': False,
+               'groups': ['student'],
+               'login_date': '2021-04-10 00:01:50',
+               'firstconnexion': False
+            }
+
+        """
         url = IDENTITY_URL
         if user_id is not None:
             url = USER_INFO_URL.format(user_id=user_id)
@@ -114,9 +127,22 @@ class EtnaWrapper:
         return result
 
     def get_promotion(self, promotion_id: int = None) -> dict:
-        """Return a user's informations. Defaults to self.login."""
-        # TODO: Docstring -> show example
-        # NOTE: Is it actually the same output?
+        """Return a user's informations. Defaults to self.login.
+
+        >>> client = EtnaWrapper()
+        >>> client.get_promotions()
+        ... [{
+              'id': 1,
+              'target_name': 'Architecte système, réseau et sécurité',
+              'term_name': 'Master - Octobre',
+              'learning_start': '2019-01-07',
+              'learning_end': '2020-11-13',
+              'learning_duration': 1251,
+              'promo': '2020',
+              'spe': 'ISR',
+              'wall_name': 'Master - Octobre - 2020'
+            }]
+        """
         url = USER_PROMO_URL
         if promotion_id is not None:
             url = PROMOTION_URL.format(promo_id=promotion_id)
