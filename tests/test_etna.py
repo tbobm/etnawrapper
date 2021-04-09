@@ -18,7 +18,7 @@ def test_wrapper_class():
 
     # display
     _s = str(client)
-    assert _s == "<etnawrapper.etna.EtnaWrapper(login='test_u', cookies={})>"
+    assert _s == "<etnawrapper.etna.EtnaWrapper(login='test_u')>"
 
     # missing password
     with pytest.raises(ValueError):
