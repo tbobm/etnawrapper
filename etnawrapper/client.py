@@ -86,7 +86,6 @@ def list_latest_conversations(count):
         click.secho(message)
 
 
-
 @activities.command(name='list')
 @click.option(
     '--full',

@@ -298,8 +298,7 @@ class EtnaWrapper:
         url = TICKETS_URL
         result = self._query(url)
         return result
-    
-    
+
     def get_ticket(self, ticket_id: int):
         """Fetch the ticket matching `ticket_id`."""
         url = TICKET_URL.format(task_id=ticket_id)
