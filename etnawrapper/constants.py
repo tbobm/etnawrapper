@@ -4,6 +4,7 @@ AUTH_URL = "https://auth.etna-alternance.net/login"
 MODULE_API = "https://modules-api.etna-alternance.net"
 GSA_API = "https://gsa-api.etna-alternance.net"
 TICKET_API = "https://tickets.etna-alternance.net/api"
+ACHIEVEMENTS_API = "https://achievements.etna-alternance.net/api"
 
 IDENTITY_URL = ETNA_API + "/identity"
 USER_INFO_URL = ETNA_API + "/api/users/{user_id}"
@@ -27,3 +28,5 @@ CONVERSATIONS_URL = INTRA_API + "/users/{user_id}/conversations"
 
 TICKET_URL = TICKET_API + "/tasks/{task_id}.json"
 TICKETS_URL = TICKET_API + "/tasks.json"
+
+ACHIEVEMENTS_URL = ACHIEVEMENTS_API + "/users/{login}/achievements"
