@@ -43,8 +43,8 @@ Below is an example usage of this program:
 
 .. code:: bash
 
-    $ etna activities
-    # Acitivities per module
+    etna activities
+    # Activities per module
 
 In order to enable autocompletion, please refer to `click's autocomplete documentation <https://click.palletsprojects.com/en/7.x/bashcomplete/>`_
 
@@ -61,8 +61,20 @@ This package is available on Pypi. Simply install it using:
 
 .. code:: bash
 
-    $ pip install etnawrapper
+    pip install etnawrapper
 
+Testing
+-------
+
+This package is available on Pypi. Simply install it using:
+
+.. code:: bash
+
+    git clone https://github.com/tbobm/etnawrapper
+    cd etnawrapper
+    pip install -e .
+    pip install -r requirements-dev.txt
+    pytest
 
 Documentation
 ------------

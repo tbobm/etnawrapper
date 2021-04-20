@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 """Client for ETNA's APIs"""
-# TODO: Implement a Session upon instantiation?
-# TODO: Cli ? :o
-# TODO: CLI.
 from datetime import datetime
 from typing import Union, List
 from io import BytesIO
 
 import requests
 
-from .constants import (
+from etnawrapper.constants import (
     AUTH_URL,
     IDENTITY_URL,
     USER_INFO_URL,
@@ -38,7 +35,7 @@ __author__ = "Theo Massard <massar_t@etna-alternance.net>"
 
 
 class EtnaWrapper:
-    """"""
+    """Multi-API client for ETNA services."""
 
     def __init__(
         self,
@@ -52,7 +49,6 @@ class EtnaWrapper:
         self._cookies = cookies
         if cookies is None:
             self._cookies = self.get_cookies(login, password)
-        # XXX: be careful about this one
         if use_session:
             self._req = requests.Session()
         else:
@@ -60,8 +56,8 @@ class EtnaWrapper:
         self.headers = headers
 
     def __repr__(self):
-        return "<etnawrapper.etna.EtnaWrapper(login='{}', cookies={})>".format(
-            self.login, self._cookies
+        return "<etnawrapper.etna.EtnaWrapper(login='{}')>".format(
+            self.login,
         )
 
     def __eq__(self, obj):
@@ -95,8 +91,8 @@ class EtnaWrapper:
             timeout=50,
         )
         if raw:
-            return response  # type: requests.Response
-        return response.json()  # type: dict
+            return response
+        return response.json()
 
     @staticmethod
     def get_cookies(login: str = None, password: str = None) -> str:
@@ -110,8 +106,21 @@ class EtnaWrapper:
         return resp.cookies.get_dict()
 
     def get_user_info(self, user_id: int = None) -> dict:
-        """Return a user's informations. Defaults to self.login."""
-        # TODO: Docstring -> show example
+        """Return a user's informations. Defaults to self.login.
+
+        >>> client = EtnaWrapper()
+        >>> client.get_user_info()
+        ... {
+               'id': 1,
+               'login': 'user_n',
+               'email': 'email@etna-alternance.net',
+               'logas': False,
+               'groups': ['student'],
+               'login_date': '2021-04-10 00:01:50',
+               'firstconnexion': False
+            }
+
+        """
         url = IDENTITY_URL
         if user_id is not None:
             url = USER_INFO_URL.format(user_id=user_id)
@@ -119,9 +128,22 @@ class EtnaWrapper:
         return result
 
     def get_promotion(self, promotion_id: int = None) -> dict:
-        """Return a user's informations. Defaults to self.login."""
-        # TODO: Docstring -> show example
-        # NOTE: Is it actually the same output?
+        """Return a user's informations. Defaults to self.login.
+
+        >>> client = EtnaWrapper()
+        >>> client.get_promotions()
+        ... [{
+              'id': 1,
+              'target_name': 'Architecte système, réseau et sécurité',
+              'term_name': 'Master - Octobre',
+              'learning_start': '2019-01-07',
+              'learning_end': '2020-11-13',
+              'learning_duration': 1251,
+              'promo': '2020',
+              'spe': 'ISR',
+              'wall_name': 'Master - Octobre - 2020'
+            }]
+        """
         url = USER_PROMO_URL
         if promotion_id is not None:
             url = PROMOTION_URL.format(promo_id=promotion_id)

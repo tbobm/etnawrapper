@@ -18,7 +18,7 @@ def test_wrapper_class():
 
     # display
     _s = str(client)
-    assert _s == "<etnawrapper.etna.EtnaWrapper(login='test_u', cookies={})>"
+    assert _s == "<etnawrapper.etna.EtnaWrapper(login='test_u')>"
 
     # missing password
     with pytest.raises(ValueError):
@@ -54,5 +54,6 @@ def test_declaration(client: etna.EtnaWrapper, login: str):
     }
     url = constants.DECLARATION_URL.format(login=login, module_id=m_id, activity_id=a_id)
     responses.add(responses.POST, url, json={'declared': True})
-    result = client.declare_log(m_id, a_id, content)
+    responses.add(responses.OPTIONS, url)
+    result = client.declare_log(m_id, content)
     assert result['declared']
