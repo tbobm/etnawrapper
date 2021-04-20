@@ -30,6 +30,7 @@ from .constants import (
     CONVERSATIONS_URL,
     TICKET_URL,
     TICKETS_URL,
+    ACHIEVEMENTS_URL,
 )
 
 
@@ -297,11 +298,16 @@ class EtnaWrapper:
         url = TICKETS_URL
         result = self._query(url)
         return result
-    
-    
+
     def get_ticket(self, ticket_id: int):
         """Fetch the ticket matching `ticket_id`."""
         url = TICKET_URL.format(task_id=ticket_id)
+        result = self._query(url)
+        return result
+
+    def get_achievements(self, login: str = None) -> list:
+        """Fetch the list of achievements."""
+        url = ACHIEVEMENTS_URL.format(login=login or self.login)
         result = self._query(url)
         return result
 
